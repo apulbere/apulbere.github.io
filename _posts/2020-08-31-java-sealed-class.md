@@ -1,36 +1,36 @@
 ---
 layout: post
-title: The Definitive Guide to Java Sealed Classes and Interfaces
-tags: [java, jep-360, sealed class, sealed interface, java 15, preview feature]
+title: An Introduction to Java Sealed Classes and Interfaces
+tags: [jep-360, sealed class, sealed interface, java 15, preview feature]
 ---
 
-Java 15 introduces for the first time sealed classes and interfaces in order to restrict which other classes or interfaces may extend or implement them.
-
-It comes as preview feature, though, which means that it is suspect to changes and can be activated only by providing the `enable-preview` command-line flag:
-
-```bash
-javac --enable-preview --source 15 com/j15/App.java
-java --enable-preview com/j15/App 
-```
+For the first time in Java we can put some restriction on inheritance hierarchy.
 
 ### Sealed class syntax
 
-Java 15 introduces a new keyword, ```non-sealed``` (yes, now we have [hyphenated keywords](https://openjdk.java.net/jeps/8223002){:target="_blank"}) and two restricted identifiers: ```sealed``` and ```permits```. Restricted because they are not allowed in some contexts.
-
-So, in order to have explicit control over the extensibility of a class we use identifier ```sealed``` and then ```permits``` to specify the set of classes allowed to extend:
+In order to have explicit control over the extensibility of a class we use identifier ```sealed``` and then ```permits``` to specify the set of classes allowed to extend:
 
 ```java
 
-sealed class Advice permits BeforeAdvice, Interceptor, AfterAdvice {}
+sealed class Advice permits BeforeAdvice, Interceptor, AfterAdvice {
 
-non-sealed class BeforeAdvice extends Advice {}
+}
 
-final class Interceptor extends Advice {}
+non-sealed class BeforeAdvice extends Advice {
 
-sealed class AfterAdvice extends Advice {}
+}
 
-final class AfterReturningAdvice extends AfterAdvice {}
+final class Interceptor extends Advice {
 
+}
+
+sealed class AfterAdvice extends Advice {
+
+}
+
+final class AfterReturningAdvice extends AfterAdvice {
+
+}
 ```
 
 ![Sealed Advice Hierarchy Diagram]({{ site.baseurl }}/images/sealed-advice-diagram.png)
@@ -163,7 +163,7 @@ public final class IterableOps<T> implements Sequence<T> {
     }
 }
 ```
-In `main` we'll create a list of strings and use it in a `for` loop. Sadly, pattern matching with switch is not yet available, so will make use of JEP 305. The stop condition is when we hit `Nil`: 
+In `main` we'll create a list of strings and use it in a `for` loop. Sadly, pattern matching with switch is not yet available, so will make use of enhanced `instanceof` (JEP-305). The stop condition is when we hit `Nil`: 
 
 ```java
 public static void main(String[] args) {
@@ -184,7 +184,7 @@ grapes
 
 ### Conclusion 
 
-Without a doubt, starting with Java 15 we'll give more consideration to whatever a class should be left open to extension or sealed upon creation. The decision relies on the purpose of the class, be it code reuse, modeling various types that exist in a domain or defending the integrity of an API.
+Without a doubt, starting with Java 15 we'll give more consideration to whatever a class should be open for extension or sealed upon creation. The decision relies on the purpose of the class, be it code reuse, modeling various types that exist in a domain or defending the integrity of an API.
 
 #### Bibliography
 

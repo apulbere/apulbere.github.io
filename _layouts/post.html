@@ -20,6 +20,9 @@ layout: default
     {{ minutes }} {{ site.text.post.minute_read | default: "minute read" }}
   {% endif %}
   </span> -->
+  <span class="post-meta small">
+    [ {{ page.tags | join: ", " }} ]
+  </span>
 </div>
 
 <article class="post-content">
