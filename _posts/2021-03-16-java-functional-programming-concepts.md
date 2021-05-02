@@ -4,11 +4,11 @@ title: Functional Programming Concepts in Java
 tags: [java 16, functional programming]
 ---
 
-With the raise of lambda expression and newer features, there is an increasing necessity to review some of the functional programming concepts and how are they applied in Java.
+With the rise of lambda expression and newer features, there is an increasing necessity to review some of the functional programming concepts and how are they applied in Java.
 
 ### Currying
 
-Currying is the process of turning a function with multiple arguments into a function with less arguments. For example, we can turn an addition between three numbers into a single argument function:
+Currying is the process of turning a function with multiple arguments into a function with fewer arguments. For example, we can turn an addition between three numbers into a single argument function:
 
 ```java
 Function<Integer, Function<Integer, Function<Integer, Integer>>> abc = a -> b -> c -> a + b + c;
@@ -39,7 +39,7 @@ Function<String, String> buildSafeUrl() {
 }
 ```
 
-In previous example `buildUrl` is also called first order while `buildSafeUrl` - higher order function. The definition of later one says that it should have at least one function as argument or return a function. This opens a whole new world of possibilities, like **lazy evaluation**, code reuse and function composition.
+In the previous example, `buildUrl` is also called first-order while `buildSafeUrl` - higher-order function. The definition of later one says that it should have at least one function as an argument or return a function. This opens a whole new world of possibilities, like **lazy evaluation**, code reuse, and function composition.
 
 Let's imagine we have the following structure of records / classes:
 
@@ -69,9 +69,9 @@ String plugType = Optional.of(new Car(null))
 assert plugType == null;
 ```
 
-Spoiler alert, it's wrong to use `Optional`. The only valid usage of `Optional` is as return value in a method as confirmed by API note from JavaDoc. Not to mention that we didn't create disposable wrapper objects for null check before Java 8 and there is no reason whatsoever to do these days.
+Spoiler alert, it's wrong to use `Optional`. The only valid usage of `Optional` is as a return value in a method as confirmed by API note from JavaDoc. Not to mention that we didn't create disposable wrapper objects for null check before Java 8 and there is no reason whatsoever to do these days.
 
-We can solve this task by creating a null safe (higher order) function:
+We can solve this task by creating a null safe (higher-order) function:
 
 ```java
 interface NullSafeFunction<T, R> extends Function<T, R> {
@@ -109,6 +109,6 @@ String sparkPlugType = NullSafeFunction.<Car>identity()
 
 assert sparkPlugType.equals("spark plug");
 ```
-Breaking down the example we can see that `NullSafeFunction::andThen` returns a composed function that executes the caller first and the parameter last.
+Breaking down the example, we can see that `NullSafeFunction::andThen` returns a composed function that executes the caller first and then the argument.
 
 _To Be Continued ..._

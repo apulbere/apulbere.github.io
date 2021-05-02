@@ -4,11 +4,11 @@ title: An Introduction to Java Sealed Classes and Interfaces
 tags: [jep-360, sealed class, sealed interface, java 15, preview feature]
 ---
 
-For the first time in Java we can put some restriction on inheritance hierarchy.
+For the first time in Java, we can put some restrictions on inheritance hierarchy.
 
 ### Sealed class syntax
 
-In order to have explicit control over the extensibility of a class we use identifier ```sealed``` and then ```permits``` to specify the set of classes allowed to extend:
+To have explicit control over the extensibility of a class we use identifier ```sealed``` and then ```permits``` to specify the set of classes allowed to extend:
 
 ```java
 
@@ -37,10 +37,10 @@ final class AfterReturningAdvice extends AfterAdvice {
 
 There are some basic rules to keep in mind:
 
-* subclasses are required to specify ```non-sealed``` if class can be extended further, ```final``` or ```sealed```
-* permited subclasses must directly extend the sealed class
+* subclasses are required to specify ```non-sealed``` if a class can be extended further, ```final``` or ```sealed```
+* permitted subclasses must directly extend the sealed class
 * ```permits``` is optional if classes are found in the same source file
-* permitted direct subclasses must reside in the same package if superclass is in unnamed module
+* permitted direct subclasses must reside in the same package if the superclass is in an unnamed module
 * permitted direct subclasses can reside in different packages only when we have a named module, meaning we declare a ```module-info.java``` with appropriate content
 
 ### Advantages of using sealed class or interface
@@ -64,7 +64,7 @@ String signal(TrafficLight trafficLight) {
 }
 ```
 
-The above code snippet when compiled throws the error message ```"switch expression does not cover all possible input values"```, because the values of ```TrafficLight``` are known beforehand and compiler detects that one case is not handled.
+The above code snippet when compiled throws the error message ```"switch expression does not cover all possible input values"```, because the values of ```TrafficLight``` are known beforehand and the compiler detects that one case is not handled.
 
 When it comes to inheritance and [pattern matching](https://cr.openjdk.java.net/~briangoetz/amber/pattern-match.html){:target="_blank"}, a feature which is due sometime in the next releases, we'll be able to get rid of traditional if-else chain and use a more elegant _switch expression_:
 
@@ -90,11 +90,11 @@ if (advice instanceof BeforeAdvice ba) {
 
 Next advantage is about __restricting the use of a superclass or interface__. Some people already struggled with [similar](https://stackoverflow.com/questions/451182/stopping-inheritance-without-using-final){:target="_blank"} problem in the past and came with rather wacky solutions (e.g. _Do not inherit, please_).
 
-It's especially useful when the API knows how to deal only with a set of predefined subclasses. Moreover, the developer doesn't have to do defensive programming, like we saw in previous example.
+It's especially useful when the API knows how to deal only with a set of predefined subclasses. Moreover, the developer doesn't have to do defensive programming, as we saw in the previous example.
 
 ### Restrictions
 
-If an interface is declared as sealed we cannot use it as lambda expression or create an anonymous class. Like `final`, `sealed` property and its list of permitted subtypes, are defined in the classfile so that it can be enforced at runtime:
+If an interface is declared as sealed we cannot use it as a lambda expression or create an anonymous class. Like `final`, `sealed` property and its list of permitted subtypes, are defined in the class file so that it can be enforced at runtime:
 
 ```java
 public sealed interface Period permits Hour, Day, Week, Month {
@@ -116,11 +116,11 @@ public sealed interface Period permits Hour, Day, Week, Month {
 }
 ```
 
-Also, be aware that you cannot mock a sealed type using Mockito framework (so far).
+Also, be aware that you cannot mock a sealed type using the Mockito framework (so far).
 
 ### Example
 
-Let's suppose we want to iterate over a list using the well known head-tail method. Of course it can be implemented in various ways, but for the sake of example we'll do it with the help of a sealed interface:
+Let's suppose we want to iterate over a list using the well-known head-tail method. Of course, it can be implemented in various ways, but for the sake of example we'll do it with the help of a sealed interface:
 
 ```java
 import java.util.List;
@@ -134,7 +134,7 @@ public sealed interface Sequence<T> permits IterableOps, Nil {
 ```
 We need `Sequence` to be sealed because, for this particular example, we'll always deal with only two cases: when there are some elements left in the list and when there are none (`Nil`), and we don't want someone to mess with this hierarchy by accidentally implementing the interface.
 
-Next, we define `Nil` which is basically a list of nothing.
+Next, we define `Nil` which is a list of nothing.
 
 ```java
 public final class Nil implements Sequence {
@@ -184,7 +184,7 @@ grapes
 
 ### Conclusion 
 
-Without a doubt, starting with Java 15 we'll give more consideration to whatever a class should be open for extension or sealed upon creation. The decision relies on the purpose of the class, be it code reuse, modeling various types that exist in a domain or defending the integrity of an API.
+Without a doubt, starting with Java 15 we'll give more consideration to whatever a class should be open for extension or sealed upon creation. The decision relies on the purpose of the class, be it code reuse, modeling various types that exist in a domain, or defending the integrity of an API.
 
 #### Bibliography
 
