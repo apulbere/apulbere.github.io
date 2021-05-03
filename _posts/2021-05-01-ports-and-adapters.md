@@ -87,14 +87,17 @@ _BookService_ can also be called _port_ in the hexagonal architecture as it is t
 
 The next module we want to develop is _bookshop-inmem-persistence_ which will hold the following adapter:
 ```java
-@AllArgsConstructor
 public class InMemBooksRepository implements BookRepository {
 
     private final List<Book> books;
 
+    public InMemBooksRepository(List<Book> books) {
+        this.books = List.copyOf(books);
+    }
+
     @Override
     public List<Book> findAll() {
-        return List.copyOf(books);
+        return books;
     }
 }
 ```
@@ -112,7 +115,9 @@ public class BooksController implements BooksApi {
 
     @Override
     public ResponseEntity<List<Book>> listBooks(String title) {
-        var books = bookService.findAll(new BookSearchCriteria(title)).stream()
+        var criteria = new BookSearchCriteria(title);
+        var books = bookService.findAll(criteria)
+                .stream()
                 .map(domainMapper::map)
                 .collect(toList());
 
