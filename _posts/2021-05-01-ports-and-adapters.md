@@ -132,4 +132,4 @@ Notice that we convert the DTO returned by the service to another DTO, generated
 
 We have seen examples of ports and adapters in hexagonal architecture, and how to properly organize the code in a decoupled fashion.
 
-Full code can be found [over on GitHub](https://github.com/apulbere/bookshop)
+Full code can be found [over on GitHub](https://github.com/apulbere/bookshop).
