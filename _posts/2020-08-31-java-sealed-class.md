@@ -4,11 +4,11 @@ title: An Introduction to Java Sealed Classes and Interfaces
 tags: [jep-360, sealed class, sealed interface, java 15, preview feature]
 ---
 
-For the first time in Java, we can put some restrictions on inheritance hierarchy.
+In this article, we'll explore what a sealed type in Java is, how to define a class and interface as sealed and finally we'll go through a practical example. 
 
 ### Sealed class syntax
 
-To have explicit control over the extensibility of a class we use identifier ```sealed``` and then ```permits``` to specify the set of classes allowed to extend:
+To have explicit control over the extensibility of a class we use identifier _sealed_ and then _permits_ to specify the set of classes allowed to extend:
 
 ```java
 
@@ -37,17 +37,17 @@ final class AfterReturningAdvice extends AfterAdvice {
 
 There are some basic rules to keep in mind:
 
-* subclasses are required to specify ```non-sealed``` if a class can be extended further, ```final``` or ```sealed```
+* subclasses are required to specify _non-sealed_ if a class can be extended further, _final_ or _sealed_
 * permitted subclasses must directly extend the sealed class
-* ```permits``` is optional if classes are found in the same source file
+* _permits_ is optional if classes are found in the same source file
 * permitted direct subclasses must reside in the same package if the superclass is in an unnamed module
-* permitted direct subclasses can reside in different packages only when we have a named module, meaning we declare a ```module-info.java``` with appropriate content
+* permitted direct subclasses can reside in different packages only when we have a named module, meaning we declare a _module-info.java_ with appropriate content
 
 ### Advantages of using sealed class or interface
 
 Let's talk first about __exhaustiveness__ and why it might come in handy. 
 
-If you watch closely the evolution of OpenJDK, you probably saw a couple of releases ago [switch expression](https://openjdk.java.net/jeps/325){:target="_blank"} and how it doesn't need anymore a ```default``` case when dealing with enums:
+If you watch closely the evolution of OpenJDK, you probably saw a couple of releases ago [switch expression](https://openjdk.java.net/jeps/325){:target="_blank"} and how it doesn't need anymore a _default_ case when dealing with enums:
 
 ```java
 enum TrafficLight {
@@ -64,7 +64,7 @@ String signal(TrafficLight trafficLight) {
 }
 ```
 
-The above code snippet when compiled throws the error message ```"switch expression does not cover all possible input values"```, because the values of ```TrafficLight``` are known beforehand and the compiler detects that one case is not handled.
+The above code snippet when compiled throws the error message _"switch expression does not cover all possible input values"_, because the values of _TrafficLight_ are known beforehand and the compiler detects that one case is not handled.
 
 When it comes to inheritance and [pattern matching](https://cr.openjdk.java.net/~briangoetz/amber/pattern-match.html){:target="_blank"}, a feature which is due sometime in the next releases, we'll be able to get rid of traditional if-else chain and use a more elegant _switch expression_:
 
@@ -75,7 +75,9 @@ switch (advice) {
     case AfterAdvice aa -> aa.after();
 };
 ```
+
 instead of
+
 ```java
 if (advice instanceof BeforeAdvice ba) {
     ba.before();
@@ -94,7 +96,7 @@ It's especially useful when the API knows how to deal only with a set of predefi
 
 ### Restrictions
 
-If an interface is declared as sealed we cannot use it as a lambda expression or create an anonymous class. Like `final`, `sealed` property and its list of permitted subtypes, are defined in the class file so that it can be enforced at runtime:
+If an interface is declared as sealed we cannot use it as a lambda expression or create an anonymous class. Like _final_, _sealed_ property and its list of permitted subtypes, are defined in the class file so that it can be enforced at runtime:
 
 ```java
 public sealed interface Period permits Hour, Day, Week, Month {
@@ -116,8 +118,6 @@ public sealed interface Period permits Hour, Day, Week, Month {
 }
 ```
 
-Also, be aware that you cannot mock a sealed type using the Mockito framework (so far).
-
 ### Example
 
 Let's suppose we want to iterate over a list using the well-known head-tail method. Of course, it can be implemented in various ways, but for the sake of example we'll do it with the help of a sealed interface:
@@ -132,9 +132,9 @@ public sealed interface Sequence<T> permits IterableOps, Nil {
     }
 }
 ```
-We need `Sequence` to be sealed because, for this particular example, we'll always deal with only two cases: when there are some elements left in the list and when there are none (`Nil`), and we don't want someone to mess with this hierarchy by accidentally implementing the interface.
+We need _Sequence_ to be sealed because, for this particular example, we'll always deal with only two cases: when there are some elements left in the list and when there are none (_Nil_), and we don't want someone to mess with this hierarchy by "accidentally" implementing the interface.
 
-Next, we define `Nil` which is a list of nothing.
+Next, we define _Nil_ which is a list of nothing.
 
 ```java
 public final class Nil implements Sequence {
@@ -142,7 +142,7 @@ public final class Nil implements Sequence {
 }
 ```
 
-Lastly, we define `IterableOps` class:
+Lastly, we define _IterableOps_ class:
 
 ```java
 import java.util.Iterator;
@@ -163,7 +163,8 @@ public final class IterableOps<T> implements Sequence<T> {
     }
 }
 ```
-In `main` we'll create a list of strings and use it in a `for` loop. Sadly, pattern matching with switch is not yet available, so will make use of enhanced `instanceof` (JEP-305). The stop condition is when we hit `Nil`: 
+
+In _main_ we'll create a list of strings and use it in a _for_ loop. Since pattern matching with switch is not yet available, will make use of the next best thing - enhanced _instanceof_ (JEP-305). The stop condition is when we hit _Nil_: 
 
 ```java
 public static void main(String[] args) {
@@ -175,7 +176,9 @@ public static void main(String[] args) {
     }
 }
 ```
+
 It prints out
+
 ```
 apples
 oranges
