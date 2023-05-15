@@ -9,26 +9,22 @@ layout: default
 
 <div class="post-header mb2">
   <h1>{{ page.title }}</h1>
-  <!-- <span class="post-meta">{{ page.date | date: site.date_format }}</span><br>
+  <span class="post-meta">{{ page.date | date: site.date_format }}</span><br>
   {% if page.update_date %}
     <span class="post-meta">{{ site.text.post.updated | default: "Updated" }}: {{ page.update_date | date: site.date_format }}</span><br>
-  {% endif %} -->
-  <!-- <span class="post-meta small">
+  {% endif %}
+  <span class="post-meta small">
   {% if page.minutes %}
     {{ page.minutes }} {{ site.text.post.minute_read | default: "minute read" }}
   {% else %}
     {{ minutes }} {{ site.text.post.minute_read | default: "minute read" }}
   {% endif %}
-  </span> -->
+  </span>
 </div>
 
 <article class="post-content">
   {{ content }}
 </article>
-
-<div class="post-meta small">
-  [ {{ page.tags | join: ", " }} ]
-</div>
 
 {% if site.show_sharing_icons %}
   {% include share_buttons.html %}
@@ -51,7 +47,7 @@ layout: default
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
   </script>
-  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 {% endif %}
 
 {% if site.facebook_comments %}
