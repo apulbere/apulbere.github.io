@@ -1,7 +1,7 @@
 # Site settings
 title:       Software Craftsmanship
-author:      adrian.md
-description: "software craftsmanship"
+author:      Adrian Pulbere
+description: "a web log on Software Engineering subjects"
 baseurl:     ""
 url:         "https://adrian.md"
 date_format: "%b %-d, %Y"
