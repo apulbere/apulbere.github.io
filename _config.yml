@@ -1,7 +1,7 @@
 # Site settings
 title:       Software Craftsmanship
 author:      Adrian Pulbere
-description: "a web log on Software Engineering subjects"
+description: "a blog on software engineering subjects"
 baseurl:     ""
 url:         "https://adrian.md"
 date_format: "%b %-d, %Y"
@@ -20,7 +20,7 @@ bing_verification:
 
 # Optional features
 animated:             false
-show_related_posts:   false
+show_related_posts:   true
 show_post_footers:    false
 show_social_icons:    true
 ajaxify_contact_form: false
@@ -49,12 +49,12 @@ facebook_comments_number: 10
 github_username: apulbere
 reddit_username:
 bitbucket_username:
-stackoverflow_id:
+stackoverflow_id: 8198056
 twitter_username:
 skype_username:
 steam_nickname:
 google_plus_id:
-linkedin_username:
+linkedin_username: apulbere
 angellist_username:
 medium_id:
 bitcoin_url:
@@ -64,15 +64,15 @@ telegram_username:
 vk_id:
 
 # Post sharing icons
-show_sharing_icons: false
+show_sharing_icons: true
 # Change to 'true' to enable individual icons
 share_facebook: false
-share_twitter: false
+share_twitter: true
 share_googleplus: false
-share_linkedin: false
+share_linkedin: true
 share_digg: false
 share_tumblr: false
-share_reddit: false
+share_reddit: true
 share_stumbleupon: false
 share_hackernews: false
 
