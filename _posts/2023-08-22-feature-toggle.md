@@ -4,10 +4,11 @@ title: A Feature Toggle Story
 tags: [feature toggle]
 ---
 
-In the following article, I'll talk about how the feature toggle technique helped me to introduce a new feature even when not all dependencies were ready. How the same technique enabled the delivery of a big refactor. Finally, another use case I will touch on is how was possible to altered the behavior of a system based on configurable feature toggles and user info.
+Feature toggle is a technique that helps to change the system's behavior without altering the code. It's interesting how stories around it vary from the catastrophic failure of the Knight Capital Group<sup>[1]</sup> to the stellar success of the first GPS satellite<sup>[2]</sup>.
+In the following article, we'll see a more typical example that all engineers have to deal with.
 
-### Delivering a new feature with dependencies
-Not so long ago I had to modify the flow of the PDF generator service in order to integrate the PDF signing feature. The main class looked like following:
+### Delivering a new feature according to Murphy's Law
+Imagine an existing flow in a system that generates a PDF report, and then uploads it to the cloud:
 
 ```java
 @AllArgsConstructor
@@ -22,11 +23,7 @@ class ReportService {
     }
 }
 ```
-The tricky part of this task was the fact that I didn't get a certificate straight away. The discussion about certificate provider and other specifics started to get tedious, and I didn't have the certainty that it will be ready in a few hours or weeks.
-
-During analysis I find out that the PDF generation is an important step and could not suffer any disruptions. An aspect that I took into consideration during the design phase. 
-
-For the signing step I created an interface:
+Now the client wants to add a layer of authentication and sign the PDF before uploading. So let's define an interface just for that:
 
 ```java
 interface SignerService {
@@ -34,7 +31,7 @@ interface SignerService {
 }
 ```
 
-And integrated it into the main logic:
+And integrated it into the main flow:
 
 ```java
 @AllArgsConstructor
@@ -51,8 +48,12 @@ class ReportService {
     }
 }
 ```
+Everything seems perfectly fine until uncertainties start to creep in.
+Let's say we already merged into the main branch the change and even did a demo to the client using a self-signed certificate on the local environment. But shortly before deploying the new version of the system on upper environments, the DevOps informs us that they have problems installing a valid certificate.
 
-After this I wanted to ensure that the service is working as before and created a _noop_ implementation:
+What do we do now? The main flow will certainly be broken. Not only the client won't be able to receive his signed PDF, but he won't receive a PDF at all. So, nothing left but to frantically revert the change, fix some conflicts on the way, run the regression, and finally prepare a new version. 
+
+Now let's imagine another scenario where right from the beginning we took into consideration Murphy's law. In this scenario, even after we implemented the feature, the main flow should work as before and only when we wish so, to pass through the signing step.
 
 ```java
 @Service
@@ -65,8 +66,7 @@ class NoOpSignerService implements SignerService {
     }
 }
 ```
-
-Finally, it was the time to get to the problem at hand and actually sign the report. For this part I defined another implementation, that is `@Primary` and loaded only in certain conditions:
+Above, is a noop implementation for the code to work as before. And below is another implementation that does the signing.
 
 ```java
 @Service
@@ -80,9 +80,22 @@ class BCSignerService implements SignerService {
     }
 }
 ```
-This means that we have two implementations, but the second one which takes precedence over any other beans is loaded into the Spring context only when `activateSigning` is `true`.
+Notice that this implementation is the primary one but Spring picks it up and injects it into the main flow only when `activateSigning` is `true`.
 
-It seems like a trivial thing to do, but thanks to this class structure I was able to develop, merge into the main branch (so the dev brach does not get stale) and even demo to the client (with a self signed certificate).
-When the certificate was finally available, I just switched the flag `activateSigning` to `true`, did a restart of the service, and everything worked perfectly (preferably to restart is blue-green deployment so you don't have any downtime).
+### Static vs dynamic feature toggles
+Perhaps one of the objections to the above solution would be the fact that we have to change an environment variable (`activateSigning`) and do a restart.
+True, but this doesn't necessarily mean that your service will be offline since you can have multiple instances and gradually replace them.
 
-About how I used the feature toggle for other goals mentioned in the beginning, details will follow soon.
+This approach is a _static_ one, meaning that your application will work only with one state of the feature toggle, flipping it will not change the running system. There are certain use cases and reasons to choose the static feature toggle:
+1. It's one time only - you won't need to go back and forth between states of the flag unless you have to "rollback" and revise it.
+2. The code is clean, testable, and modular. Notice that the feature lives in a separate class, apart from the rest of the code. The old unchanged tests still work, and we just added a couple of test cases for the activated feature. Also, the application has to check the flag only once when configuring the context and not on every request.
+
+The _dynamic_ feature toggles are more fit for scenarios where they are dependent on user requests or the stakeholders want to control them via some management tool.
+
+All things said, I think the feature toggle should be always considered during the design phase even if the client didn't specifically request it and even if we don't have a feature toggle discipline. We can always start small, with configuration properties as shown in this article.
+
+<sup>[1]</sup>[How to lose half a billion dollars with bad feature flags](https://blog.statsig.com/how-to-lose-half-a-billion-dollars-with-bad-feature-flags-ccebb26adeec)
+
+<sup>[2]</sup>[The Relativity Switch](https://www.artsjournal.com/artfulmanager/main/the-relativity-switch.php)
+
+<sup>[3]</sup>[Murphy's law](https://en.wikipedia.org/wiki/Murphy%27s_law)
