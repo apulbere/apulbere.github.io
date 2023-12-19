@@ -31,7 +31,7 @@ interface SignerService {
 }
 ```
 
-And integrated it into the main flow:
+And integrate it into the main flow:
 
 ```java
 @AllArgsConstructor
@@ -88,7 +88,7 @@ True, but this doesn't necessarily mean that your service will be offline since 
 
 This approach is a _static_ one, meaning that your application will work only with one state of the feature toggle, flipping it will not change the running system. There are certain use cases and reasons to choose the static feature toggle:
 1. It's one time only - you won't need to go back and forth between states of the flag unless you have to "rollback" and revise it.
-2. The code is clean, testable, and modular. Notice that the feature lives in a separate class, apart from the rest of the code. The old unchanged tests still work, and we just added a couple of test cases for the activated feature. Also, the application has to check the flag only once when configuring the context and not on every request.
+2. The code is clean, testable, and modular. Notice that the feature lives in a separate class, apart from the rest of the code. The old unchanged tests still work, we just have to add a couple of test cases for the activated feature.
 
 The _dynamic_ feature toggles are more fit for scenarios where they are dependent on user requests or the stakeholders want to control them via some management tool.
 
