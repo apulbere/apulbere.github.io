@@ -8,7 +8,7 @@ ORMs promise to simplify persistence, but in practice, they introduce recurring 
 
 In many cases, there’s no clear or well-documented justification for why an ORM was introduced in the first place. Most probably it’s adopted by default, based on assumptions such as the belief that you can switch the database vendor without changing any code or that an ORM somehow “bridges” object-oriented programming and relational databases.
 
-ORMs are meant to simplify persistence, but they often end up dictating the entire application architecture. Instead of designing models around business logic, we adapt them to fit ORM limitations - flattening structures, adding unnecessary relationships, or compromising encapsulation just to bypass ORM constraints. The result is a codebase where the data model drives the design and the actual logic comes second.
+While intended to ease data access, ORMs often end up dictating the entire application architecture. Instead of designing models around business logic, we adapt them to fit ORM limitations, flattening structures, adding unnecessary relationships, or compromising encapsulation just to bypass ORM constraints. The result is a codebase where the data model drives the design and the actual logic comes second.
 
 Since ORMs typically map entire database tables to entities, these entities tend to get passed throughout the application. The issue? You rarely need all the fields, let alone the related entities that are pulled in by default. Projections or custom queries can help, but despite code reviews, overfetching still frequently slips through.
 
