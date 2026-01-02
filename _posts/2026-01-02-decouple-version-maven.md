@@ -24,7 +24,7 @@ Regardless of the branching strategy, we will eventually need to merge branches,
 There are some options to work around this like cherry-picking and [merge strategies](https://git-scm.com/docs/merge-strategies) among others, but that adds significant complexity to the CI/CD automation.
 
 #### Security Issues
-Best practices dictate that main branches should be protected, preventing direct pushes, deletions, commits without a pull request etc. In mature projects, CI/CD automation typically handles releases, creating a problem: we must either manually approve every version-change PR or whitelist a bot/user to bypass branch protection rules. Both are poor options: the first defeats the purpose of automation, while the second has security risks like self-escalation via workflow edits. [Here](https://github.com/orgs/community/discussions/13836) is an intersting discussion related to later one.
+As per best practices, the main branches should be protected, preventing direct pushes, deletions, commits without a pull request etc. In mature projects, CI/CD automation typically handles releases, creating a problem: we must either manually approve every version-change PR or whitelist a bot/user to bypass branch protection rules. Both are poor options: the first defeats the purpose of automation, while the second has security risks like self-escalation via workflow edits. [Here](https://github.com/orgs/community/discussions/13836) is an intersting discussion around the later one.
 
 ### The Solution: Decouple Versioning and Git Operations from Maven
 Seeing the initial workflow, it is clear that Maven has two distinct roles: release orchestration and artifact deployment. To solve this, we need to separate the responsibilities between two actors:
@@ -87,4 +87,4 @@ Amend the Maven deploy command to pass the revision version.
 mvn deploy -Drevision=${{ steps.extract_version.outputs.version }}
 ```
 
-In this example, the version is pulled directly from the GitHub Release action, which says both what version is used and when the release occurs. Once these responsibilities are separated, it is easy to extend the logic, for instance, by implementing automatic version calculation similar to [jgitver](https://github.com/jgitver/jgitver). But mind you: in our CI/CD pipeline, not in Maven.
+In this example, the version is pulled directly from the GitHub Release action, which says both what version is used and when the release occurs. Once these responsibilities are separated, it is easy to extend the logic, for instance, by implementing automatic version calculation similar to [jgitver](https://github.com/jgitver/jgitver). But be carefull: in CI/CD pipeline, not in Maven.
