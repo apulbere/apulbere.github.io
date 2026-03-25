@@ -1,13 +1,13 @@
 ---
 layout: post
-title: Automatic Pull Request comment resolution through AI
-tags: [ai, code-review, copilot, claude]
+title: Automatic Pull Request comments resolution through AI
+tags: [ai, code-review, copilot, claude-code]
 ---
-Are you tired of Copilot comments on your PR? Then let AI deal with it. In following article you'll find an useful command for Claude Code to automatically resolve pull request comments.
+Are you tired of Copilot comments on your PR? Then let AI deal with it. In the following article, find a useful command for Claude Code.
 
 ### Prerequisites
 * Claude Code
-* gh cli. To install it see below instructions:
+* gh cli
   * `brew install gh`
   * `gh auth login`
 
@@ -16,7 +16,7 @@ Are you tired of Copilot comments on your PR? Then let AI deal with it. In follo
 Create file `~/.claude/commands/resolve-pr-comments.md` with content:
 
 ```markdown
-etch all open/unresolved review comments on a PR and help me resolve them.
+Fetch all open/unresolved review comments on a PR and help me resolve them.
 
 ## Step 1: Determine the PR
 If a PR number is provided as $ARGUMENTS, use that.
@@ -75,8 +75,10 @@ Add to `~/.claude/settings.json` the following:
   "permissions": {
     "allow": [
       "Bash(gh pr:*)",
-      "Bash(gh api:*)"
+      "Bash(gh api:*)",
+      "Bash(gh repo:*)"
     ]
   }
 }
 ```
+Note, maybe it's worth fine tunning the permissions, instead of using the wildcard.
