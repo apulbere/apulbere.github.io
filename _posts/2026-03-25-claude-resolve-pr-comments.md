@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Decouple Maven Releases from Version Logic
-tags: [java, maven, ci/cd]
+title: Automatic Pull Request comment resolution through AI
+tags: [ai, code-review, copilot, claude]
 ---
 Are you tired of Copilot comments on your PR? Then let AI deal with it. In following article you'll find an useful command for Claude Code to automatically resolve pull request comments.
 
