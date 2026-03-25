@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Automatic Pull Request comments resolution through AI
+title: Pull Request Review Resolution with Claude Code
 tags: [ai, code-review, copilot, claude-code]
 ---
 Are you tired of Copilot comments on your PR? Then let AI deal with it. In the following article, find a useful command for Claude Code.
@@ -82,3 +82,9 @@ Add to `~/.claude/settings.json` the following:
 }
 ```
 Note, maybe it's worth fine tunning the permissions, instead of using the wildcard.
+
+### Usage
+
+```
+claude /resolve-pr-comments
+```
