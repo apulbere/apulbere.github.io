@@ -22,14 +22,18 @@ Fetch all open/unresolved review comments on a PR and help me resolve them.
 If a PR number is provided as $ARGUMENTS, use that.
 Otherwise, run this command first and capture the output:
 
+``bash
 gh pr view --json number -q .number
+``
 
 Store the result as the PR number. If the command fails or returns empty, tell me there's no open PR on this branch and stop.
 
 ## Step 2: Get Repo Info
 Run this command and store the owner and repo name:
 
+``bash
 gh repo view --json owner,name -q '.owner.login + "/" + .name'
+``
 
 This gives you OWNER/REPO. Use these values in all subsequent commands.
 
@@ -38,7 +42,9 @@ Use the PR number and OWNER/REPO from previous steps. Replace OWNER, REPO, and P
 
 First, get unresolved review threads via GraphQL:
 
+``
 gh api graphql -f query='query { repository(owner:"OWNER", name:"REPO") { pullRequest(number:PR_NUMBER) { reviewThreads(first:100) { nodes { isResolved, comments(first:10) { nodes { id, body, author { login }, path, line } } } } } } }'
+``
 
 Only include threads where `isResolved` is `false`. Skip any already-resolved threads entirely.
 
