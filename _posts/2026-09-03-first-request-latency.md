@@ -21,7 +21,7 @@ And here the scenarios:
 * baseline-zgc - no AOT, using ZGC - concurrent garbage collection as opposed to G1 stop-the-world type, which can cause some spikes in latency (or at least I was thinking so).
 * aot-zgc - cache + ZGC.
 
-For each scenario I ran the service with `-XX:AOTCacheOutput` creating the cache, then with `-XX:AOTCache` multiple executions to get more representative statistics.
+For each scenario I ran the service with `-XX:AOTCacheOutput` creating the cache, then with `-XX:AOTCache` multiple executions to get more accurate statistics.
 
 ![Median First-Request Latency by Configuration (G1 vs ZGC)]({{ site.baseurl }}/images/bench-first-request-median.png)
 
