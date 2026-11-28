@@ -1,0 +1,31 @@
+/* Original Pixyll look: Merriweather Light body, Lato Black headings, Lato Light chrome. */
+body {
+  font-family: 'Merriweather', 'PT Serif', Georgia, 'Times New Roman', serif;
+  font-weight: 300;
+}
+
+h1, h2, h3, h4, h5, h6,
+.logo a,
+.entry-header h2,
+.post-title,
+.related-posts h2,
+.archive-year-header,
+.archive-entry-title {
+  font-family: 'Lato', 'Helvetica Neue', Helvetica, sans-serif;
+  font-weight: 900;
+}
+
+#menu,
+.breadcrumbs,
+.post-meta,
+.entry-footer,
+.footer,
+.pagination,
+.paginav,
+.post-tags,
+.toc summary,
+.terms-tags,
+.archive-meta {
+  font-family: 'Lato', 'Helvetica Neue', Helvetica, sans-serif;
+  font-weight: 300;
+}

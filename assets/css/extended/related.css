@@ -1,0 +1,9 @@
+.related-posts {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.related-posts h2 { font-size: 20px; margin-bottom: 12px; }
+.related-posts ul { padding-inline-start: 20px; }
+.related-posts li { margin: 6px 0; }
+.related-posts time { color: var(--secondary); font-size: 14px; margin-inline-start: 6px; }
