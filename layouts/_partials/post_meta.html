@@ -1,0 +1,27 @@
+{{- /*
+  Override of PaperMod's post_meta.html: same items, but each in its own classed span with
+  CSS-drawn separators, so post lists can hide some of them (see assets/css/extended/post-meta.css).
+*/ -}}
+{{- $meta := slice }}
+
+{{- if not .Date.IsZero -}}
+    {{- $meta = $meta | append (printf "<span class='meta-item meta-date' title='%s'>%s</span>" (.Date | time.Format "2006-01-02T15:04:05-07:00") (.Date | time.Format (default ":date_long" site.Params.DateFormat))) }}
+{{- end }}
+
+{{- if (.Param "ShowReadingTime") -}}
+    {{- $meta = $meta | append (printf "<span class='meta-item meta-reading-time'>%s</span>" (i18n "read_time" .ReadingTime | default (printf "%d min" .ReadingTime))) }}
+{{- end }}
+
+{{- if (.Param "ShowWordCount") -}}
+    {{- $meta = $meta | append (printf "<span class='meta-item meta-word-count'>%s</span>" (i18n "words" .WordCount | default (printf "%d words" .WordCount))) }}
+{{- end }}
+
+{{- if not (.Param "hideAuthor") -}}
+    {{- with (partial "author.html" .) }}
+        {{- $meta = $meta | append (printf "<span class='meta-item meta-author'>%s</span>" .) }}
+    {{- end }}
+{{- end }}
+
+{{- with $meta }}
+    {{- delimit . "" | safeHTML -}}
+{{- end -}}

@@ -1,0 +1,12 @@
+{{- if and .IsPage (eq .Section "posts") }}
+{{- with site.RegularPages.Related . | first 3 }}
+<nav class="related-posts" aria-label="Related posts">
+  <h2>Related posts</h2>
+  <ul>
+    {{- range . }}
+    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a> <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time></li>
+    {{- end }}
+  </ul>
+</nav>
+{{- end }}
+{{- end }}

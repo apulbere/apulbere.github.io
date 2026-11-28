@@ -1,0 +1,9 @@
+/* Separators between post meta items (drawn here so hidden items don't leave a stray "·"). */
+.meta-item + .meta-item::before {
+  content: "\00a0·\00a0";
+}
+
+/* Post lists (home, tags, /posts/) show only the date; articles also show reading time. */
+.post-entry .meta-reading-time {
+  display: none;
+}

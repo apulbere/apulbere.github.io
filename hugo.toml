@@ -1,0 +1,92 @@
+baseURL = "https://adrian.md/"
+locale = "en-US"
+title = "Software Craftsmanship"
+copyright = "© Adrian Pulbere"
+theme = "PaperMod"
+
+enableRobotsTXT = true
+enableEmoji = true
+capitalizeListTitles = false # keep tag names as written ("ai", not "Ai")
+
+[pagination]
+  pagerSize = 10
+
+# Keep the Jekyll URL scheme (/:year/:month/:day/:slug/) so no indexed URL changes.
+# Date and slug both come from the "YYYY-MM-DD-slug.md" filename, as in Jekyll.
+[frontmatter]
+  date = [":filename", ":default"]
+
+[permalinks.page]
+  posts = "/:year/:month/:day/:slug/"
+
+# Keep the feed at /feed.xml so existing subscribers don't break.
+[outputFormats.RSS]
+  mediaType = "application/rss+xml"
+  baseName = "feed"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML"]
+  term = ["HTML"]
+
+[services.googleAnalytics]
+  ID = "G-FW5XKREN94"
+
+[services.rss]
+  limit = 20
+
+[sitemap]
+  changeFreq = ""
+  priority = -1
+
+[markup.goldmark.renderer]
+  unsafe = true # posts contain raw HTML (tables, etc.)
+
+[markup.highlight]
+  noClasses = false # PaperMod ships its own Chroma CSS
+  codeFences = true
+  guessSyntax = false
+
+[params]
+  description = "a blog on software engineering subjects"
+  author = "Adrian Pulbere"
+  mainSections = ["posts"]
+  defaultTheme = "auto"
+  ShowReadingTime = true
+  hideAuthor = true # name stays in <meta name="author"> and structured data
+  ShowPostNavLinks = true
+  ShowCodeCopyButtons = true
+  ShowFullTextinRSS = true
+  ShowRssButtonInSectionTermList = true
+  disableSpecial1stPost = true
+
+  [params.schema]
+    publisherType = "Person"
+    # Author profiles for structured data (kept separate so the RSS icon isn't listed as a profile).
+    sameAs = [
+      "https://github.com/apulbere",
+      "https://www.linkedin.com/in/apulbere/",
+      "https://stackoverflow.com/users/8198056",
+    ]
+
+  [params.assets]
+    favicon = "favicon.ico"
+    favicon16x16 = "favicon-16x16.png"
+    favicon32x32 = "favicon-32x32.png"
+    apple_touch_icon = "apple-touch-icon.png"
+    safari_pinned_tab = "favicon-32x32.png"
+
+  [params.fuseOpts]
+    keys = ["title", "summary", "content", "permalink"]
+
+[[menu.main]]
+  identifier = "about"
+  name = "About"
+  url = "/about/"
+  weight = 10
+[[menu.main]]
+  identifier = "search"
+  name = "Search"
+  url = "/search/"
+  weight = 20
